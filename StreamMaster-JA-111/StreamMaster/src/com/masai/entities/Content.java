@@ -7,7 +7,7 @@ public class Content implements Serializable{
 
 	private int id;
 	private String title;
-	private double Duration;
+	private int Duration;
 	private double rating;
 	private String category;
 
@@ -15,7 +15,7 @@ public class Content implements Serializable{
 		super();
 	}
 
-	public Content(int id, String title, double Duration, double rating, String category) {
+	public Content(int id, String title, int Duration, double rating, String category) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -44,7 +44,7 @@ public class Content implements Serializable{
 		return Duration;
 	}
 
-	public void setQty(double Duration) {
+	public void setQty(int Duration) {
 		this.Duration = Duration;
 	}
 

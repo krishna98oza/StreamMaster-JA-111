@@ -16,13 +16,13 @@ public interface CustomerService {
 
 	public void signUp(Customer cus, Map<String, Customer> customers) throws DuplicateDataException;
 
-	public boolean buyContent(int id, double qty, String email, Map<Integer, Content> products,
+	public boolean playShow(int id, String title, Map<Integer, Content> products,
 			Map<String, Customer> customers)
 			throws InvalidDetailsException, ContentException;
 
-	public boolean addMoneyToWallet(double amount, String email, Map<String, Customer> customers);
+	public boolean addRatingToShow(double amount, String email, Map<String, Customer> customers);
 
-	public double viewWalletBalance(String email, Map<String, Customer> customers);
+	public void viewFavorites(Map<Integer, Content> products) throws ContentException;
 
 	public Customer viewCustomerDetails(String email, Map<String, Customer> customers);
 

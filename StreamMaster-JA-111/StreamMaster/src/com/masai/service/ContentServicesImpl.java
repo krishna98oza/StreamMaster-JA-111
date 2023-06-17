@@ -14,7 +14,7 @@ public class ContentServicesImpl implements ContentService {
 	@Override
 	public String addContent(Content prod, Map<Integer, Content> products) {
 		// TODO Auto-generated method stub
-//as our ids are always unique thats why directly putting into products
+
 		products.put(prod.getId(), prod);
 
 		return "Content added successfully";

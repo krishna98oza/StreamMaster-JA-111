@@ -55,52 +55,26 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public boolean buyContent(int id, double qty, String email, Map<Integer, Content> products,
+	public boolean playShow(int id, String title, Map<Integer, Content> products,
 			Map<String, Customer> customers)
 			throws InvalidDetailsException, ContentException {
 
 		if (products.size() == 0)
-			throw new ContentException("Content list is empty");
+			throw new ContentException("Please select show");
 
 		if (products.containsKey(id)) {
 
 			Content prod = products.get(id);
 
-			if (prod.getQty() >= qty) {
-
-				Customer cus = customers.get(email);
-
-				double buyingPrice = qty * prod.getPrice();
-
-				if (cus.getWalletBalance() >= buyingPrice) {
-					cus.setWalletBalance(cus.getWalletBalance() - buyingPrice);
-
-					prod.setQty(prod.getQty() - qty);
-
-					products.put(id, prod);
-
-//					Transaction tr = new Transaction(cus.getUsername(), email, id,prod.getName(), qty, prod.getPrice(),
-//							prod.getPrice() * qty, LocalDate.now());
-//
-//					transactions.add(tr);
-
-				} else {
-					throw new InvalidDetailsException("wallet balance is not sufficient");
-				}
-
-			} else {
-				throw new InvalidDetailsException("product quantity is not suffiecient");
-			}
-
 		} else {
-			throw new InvalidDetailsException("product not available with id: " + id);
+			throw new InvalidDetailsException("This Show not available with id: " + id);
 		}
 
 		return false;
 	}
 
 	@Override
-	public boolean addMoneyToWallet(double amount, String email, Map<String, Customer> customers) {
+	public boolean addRatingToShow(double amount, String email, Map<String, Customer> customers) {
 		// TODO Auto-generated method stub
 
 		Customer cus = customers.get(email);
@@ -113,12 +87,16 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public double viewWalletBalance(String email, Map<String, Customer> customers) {
+	public void viewFavorites(Map<Integer, Content> products) throws ContentException {
 		// TODO Auto-generated method stub
+		if (products != null && products.size() > 0) {
+			for (Map.Entry<Integer, Content> me : products.entrySet()) {
+				System.out.println(me.getValue());
+			}
 
-		Customer cus = customers.get(email);
-
-		return cus.getWalletBalance();
+		} else {
+			throw new ContentException("Content List is empty");
+		}
 	}
 
 	@Override
