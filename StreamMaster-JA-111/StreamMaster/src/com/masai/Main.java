@@ -21,15 +21,13 @@ import com.masai.utility.IDGeneration;
 
 public class Main {
 
-	// admin functionality
 	private static void adminFunctionality(Scanner sc, Map<Integer, Content> products, Map<String, Customer> customers) throws InvalidDetailsException, ContentException  {
 		// login for admin
 
 		adminLogin(sc);
-
+		
 		ContentService prodService = new ContentServicesImpl();
 		CustomerService cusService = new CustomerServiceImpl();
-//		TransactionService trnsactionService = new TransactionServiceImpl();
 		int choice = 0;
 		try {
 			do {
@@ -63,9 +61,7 @@ public class Main {
 					adminViewAllCustomers(customers, cusService);
 
 					break;
-//				case 6:
-//					adminViewAllTransactions(transactions, trnsactionService);
-//					break;
+
 				case 6:
 					System.out.println("admin has successfully logout");
 					break;
@@ -108,7 +104,7 @@ public class Main {
 
 		Content prod = new Content(IDGeneration.generateId(), title, duration, rating, cate);
 
-		str = prodService.addContent(prod, products);// considering all details are valid
+		str = prodService.addContent(prod, products);
 
 		return str;
 
@@ -181,11 +177,10 @@ public class Main {
 			do {
 				System.out.println("Select the option of your choice");
 				System.out.println("Press 1 to view all Contents");
-				System.out.println("Press 2 to like a Content");
-				System.out.println("Press 3 to add Content to a Favorites");
-				System.out.println("Press 4 view Favorite List");
-				System.out.println("Press 5 view my details");
-				System.out.println("Press 6 to logout");
+				System.out.println("Press 2 to continue Previous show");
+				System.out.println("Press 3 to give feedback");
+				System.out.println("Press 4 view my details");
+				System.out.println("Press 5 to logout");
 				choice = sc.nextInt();
 
 				switch (choice) {
@@ -193,21 +188,17 @@ public class Main {
 					customerViewAllContents(products, prodService);
 					break;
 				case 2:
-					String result = customerBuyContent(sc, email, products, customers, cusService);
+					String result = customerPlayShow(sc, email, products, customers, cusService);
 					System.out.println(result);
 					break;
 				case 3:
-					String moneyAdded = customerAddMoneyToWallet(sc, email, customers, cusService);
+					String moneyAdded = customerRateToShow(sc, email, customers, cusService);
 					System.out.println(moneyAdded);
 					break;
 				case 4:
-					double walletBalance = customerViewWalletBalance(email, customers, cusService);
-					System.out.println("Wallet balance is: " + walletBalance);
-					break;
-				case 5:
 					customerViewMyDetails(email, customers, cusService);
 					break;
-				case 6:
+				case 5:
 					System.out.println("you have successsfully logout");
 					break;
 				default:
@@ -253,33 +244,28 @@ public class Main {
 		prodService.viewAllContents(products);
 	}
 
-	public static String customerBuyContent(Scanner sc, String email, Map<Integer, Content> products,
+	public static String customerPlayShow(Scanner sc, String email, Map<Integer, Content> products,
 			Map<String, Customer> customers, CustomerService cusService)
 			throws InvalidDetailsException, ContentException {
 		System.out.println("Enter the Show id");
 		int id = sc.nextInt();
-		System.out.println("Please rate this show");
-		double rate = sc.nextInt();
-		cusService.buyContent(id, rate, email, products, customers);
+		System.out.println("Please enter title");
+		String rate = sc.next();
+		cusService.playShow(id, rate, products, customers);
 
-		return "Thank you for your ratings";
+		return "Your Show is playing";
 
 	}
 
-	public static String customerAddMoneyToWallet(Scanner sc, String email, Map<String, Customer> customers,
+	public static String customerRateToShow(Scanner sc, String email, Map<String, Customer> customers,
 			CustomerService cusService) {
 		System.out.println("please enter the amount");
-		double money = sc.nextDouble();
-		boolean added = cusService.addMoneyToWallet(money, email, customers);
+		double rate = sc.nextDouble();
+		boolean added = cusService.addRatingToShow(rate, email, customers);
 
-		return "Amount: " + money + " successfully added to your wallet";
+		return "Thank you for your feedback";
 	}
 
-	public static double customerViewWalletBalance(String email, Map<String, Customer> customers,
-			CustomerService cusService) {
-		double walletBalance = cusService.viewWalletBalance(email, customers);
-		return walletBalance;
-	}
 
 	public static void customerViewMyDetails(String email, Map<String, Customer> customers,
 			CustomerService cusService) {
